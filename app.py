@@ -17,7 +17,7 @@ def index():
             for filename in filenames:
                 print(os.path.join(dirname, filename))
 
-        df=pd.read_excel('recomm.xlsx')
+        df=pd.read_excel('./recomm.xlsx')
 
         df=df.drop('Size',axis=1)
 
@@ -36,13 +36,24 @@ def index():
         concatenated_info = []
 
         for index, row in new_df.iterrows():
-            info_string = row['name']+ row['main_category'] + row['sub_category']
+            info_string = row['name']+ row['main_category'] + row['sub_category']     # algo 1 nlp 
     
             concatenated_info.append(info_string)
 
         result = '\n'.join(concatenated_info)
 
         input_string=result
+
+        
+        for index, row in new_df.iterrows():
+            if row['Purchased']=='No':
+                info_string = row['name']+ row['main_category'] + row['sub_category']
+    
+                concatenated_info.append(info_string)
+
+        result = '\n'.join(concatenated_info)
+
+        input_string1=result
 
         import spacy
 
@@ -99,8 +110,9 @@ def index():
                         "thermal",     "underwear",     "ski",     "jackets",     "snowboard",     "jackets",     "ski",     "pants"] 
 
 
+# algo 3 prefrence based
 
-        additional_keywords+=['tv, audio & cameras', 'stores', 'beauty & health',
+        additional_keywords+=['tv, audio & cameras', 'stores', 'beauty & health', 
        "men's clothing", 'grocery & gourmet foods', "men's shoes",
        'accessories', "women's clothing"]
 
@@ -124,6 +136,8 @@ def index():
 
 # Convert the set of keywords to a comma-separated string
         keywords_string = ', '.join(keywords_set)
+
+        keywords_string= keywords_string + input_string1  # algo 4 purchase
 
 # Print the extracted product information with additional context
         print("Extracted Product Information:", keywords_string)
@@ -150,7 +164,9 @@ def index():
         import pandas as pd
         from sklearn.preprocessing import MinMaxScaler
 
-        weights = {
+# algo 2 using ML 
+
+        weights = {                         
             'ratings': 0.3,
             'no_of_ratings': 0.2,
             'discount_price': 0.2,
@@ -173,7 +189,7 @@ def index():
         new_df_without1['description'].fillna('', inplace=True)
         new_df_without1['cosine_similarity'] = new_df_without1.apply(lambda x: cosine_similarity_strings(x['description'], input_string), axis=1) 
         new_df_without1['cosine_similarity'] =new_df_without1['cosine_similarity'] +new_df_without1['normalized_weighted_feature'] 
-        od=new_df_without1[['name','Product ID','cosine_similarity','ratings']]
+        od=new_df_without1[['name','Product ID','cosine_similarity','ratings','image']]
 
 
         sorted_data_descending = od.sort_values(by='cosine_similarity', ascending=False)
@@ -182,9 +198,28 @@ def index():
         p_name=p_name.drop_duplicates()
         p_name=p_name.drop('cosine_similarity',axis=1)
         p_name=p_name.head(20)
+        # print(p_name.columns.to_list())
+        import requests
+        def is_valid(link):
+            try:
+                response = requests.head(link)
+                if response.status_code==200:
+                    return True;
+                return False;
+            except requests.RequestException :
+                return False
+        
+
+        p_name['IsValid'] = p_name['image'].apply(is_valid)
+
+        filtered_pd_name = p_name[p_name['IsValid']]
+        filtered_pd_name =filtered_pd_name.drop(columns=['IsValid'])
+
+                  
 
 
-        return render_template('result.html', p_name=p_name)  # Pass the recommendation results to the template
+
+        return render_template('result.html', p_name=filtered_pd_name)  # Pass the recommendation results to the template
     return render_template('index.html')
 
 if __name__ == '__main__':
