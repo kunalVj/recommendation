@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Product Recommendation Results</title>
-    <link rel="stylesheet" href="../static/styles.css">
-</head>
+    <!-- <title>Product Recommendation Results</title> -->
+    <!-- <link rel="stylesheet" href="../static/styles.css"> -->
+<!-- </head>
 <body>
-    <h1>Recommended Products</h1><!DOCTYPE html>
     <html>
-    <head>
+    <head> -->
         <title>Product Recommendation Results</title>
         <!-- <link rel="stylesheet" href="../static/styles.css"> -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -61,11 +60,8 @@
                 color: orange;;
             }
         </style>
-    </head>
+</head>
     <body style="background-color: azure;">
-    
-    
-    
             <div>
                 <h1 style="margin-left: 1.5rem;">Products You May Like</h1>
             </div>
@@ -98,23 +94,4 @@
         </div>
         {% endfor %}
     </body>
-    </html> 
-    
-    <table>
-        <tr>
-            <th>Product Name</th>
-            <th>Product ID</th>
-            <!-- <th>Cosine Similarity</th> -->
-            <th>Ratings</th>
-        </tr>
-        {% for row in p_name.iterrows() %}
-        <tr>
-            <td>{{ row[1]['name'] }}</td>
-            <td>{{ row[1]['Product ID'] }}</td>
-            <!-- <td>{{ row[1]['cosine_similarity'] }}</td> -->
-            <td>{{ row[1]['ratings'] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
 </html>
