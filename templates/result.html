@@ -5,7 +5,101 @@
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
-    <h1>Recommended Products</h1>
+    <h1>Recommended Products</h1><!DOCTYPE html>
+    <html>
+    <head>
+        <title>Product Recommendation Results</title>
+        <!-- <link rel="stylesheet" href="../static/styles.css"> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            .kunal{
+                display: flex;
+                flex-direction: row;
+            }
+            .shubham{
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                margin: 2rem;
+            }
+    
+            .dropdown {
+                position: relative;
+                display: inline-block;
+                margin-top: 1rem;
+            }
+            .dropbtn {
+                background-color: #2874f0;
+                color: white;
+                padding: 10px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;    
+                border-radius: 5px;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            .checked{
+                color: orange;;
+            }
+        </style>
+    </head>
+    <body style="background-color: azure;">
+    
+    
+    
+            <div>
+                <h1 style="margin-left: 1.5rem;">Products You May Like</h1>
+            </div>
+            <!-- <div class="dropdown">
+                <button class="dropbtn">Preferences</button>
+                <div class="dropdown-content">
+                    <a href="#">All Electronics</a>
+                    <a href="#">All Grocery & Gourmet Foods</a>
+                    <a href="#">Bags & Luggage</a>
+                    <a href="#">Casual Shoes</a>
+                    <a href="#">Diet & Nutrition</a>
+                    <a href="#">Ethnic Wear</a>
+                    <a href="#">Home Audio & Theater</a>
+                    <a href="#">Men's Fashion</a>
+                    <a href="#">T-shirts & Polos</a>
+                </div>
+            </div> -->
+    
+    
+        {% for row in p_name.iterrows() %}
+        <div class="kunal">
+            <div class="shubham">
+                <img src="{{row[1]['image']}}" alt="Image" width="150">
+                <p>Product ID : {{row[1]['Product ID']}}</p>
+            </div>
+            <div class="shubham">
+                <h1 style="font-size: 1.5rem;font-weight: 500;font-family: math;">{{row[1]['name']}}</h1>
+                <h4>Ratings : {{row[1]['ratings']}} <span class="fa fa-star checked"></span></h4>
+            </div>
+        </div>
+        {% endfor %}
+    </body>
+    </html> 
+    
     <table>
         <tr>
             <th>Product Name</th>
